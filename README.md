@@ -1,54 +1,37 @@
-# React + TypeScript + Vite
+# 🚀 FD-Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 What is FD-Frontend?
+FD-Frontend is a simple feedback form application developed using TypeScript.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚡ Getting Started
 
-## Expanding the ESLint configuration
+Follow these steps to set up and run the project locally:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🔹 Step 1: Set Up FD-Backend
+Before running FD-Frontend, ensure the backend is set up correctly. Follow the instructions in the FD-Backend repository:
+[FD-Backend Repository](https://github.com/asifihsan/fd-backend)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 🔹 Step 2: Clone the Repository
+```sh
+git clone https://github.com/asifihsan/fd-frontend.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🔹 Step 3: Open the Project
+Navigate to the `fd-frontend` folder and open it in Visual Studio Code.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### 🔹 Step 4: Install Dependencies
+```sh
+npm install
 ```
+
+### 🔹 Step 5: Run the Project
+```sh
+npm run dev
+```
+
+---
+
+## 🚀 Create. Design. Deploy.
+
