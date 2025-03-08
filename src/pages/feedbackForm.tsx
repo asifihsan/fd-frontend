@@ -89,6 +89,7 @@ const FeedbackForm: React.FC = () => {
     <>
       <form onSubmit={handleSubmit}>
         <Stack spacing={2} sx={{ maxWidth: 400, margin: "auto", padding: 2 }}>
+          <h2>Share your feedback</h2>
           <TextField
             label="Customer Name"
             name="name"
