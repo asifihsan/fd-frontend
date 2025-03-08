@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Typography, CircularProgress, Stack, Paper } from "@mui/material";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import FeedbackList from "./feedbackList";
+import useFetch from "../hooks/useFecth";
 
 interface FeedbackStats {
   rating: number;
@@ -10,42 +11,28 @@ interface FeedbackStats {
 }
 
 const FeedbackStatus: React.FC = () => {
-  const [stats, setStats] = useState<FeedbackStats[]>([]);
-  const [avgRating, setAvgRating] = useState<number | null>(null);
+  // Use `useFetch` hook to get feedback stats with auto-refresh every 5 seconds
+  const { data: stats, loading, error } = useFetch<FeedbackStats[]>("http://localhost:3000/api/feedback/stats", 5000);
 
-  // Fetch feedback stats from API
-  const fetchStats = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/feedback/stats");
-      const data = await response.json();
-      setStats(data);
-      setAvgRating(data.length > 0 ? data[0].avg_rating : null);
-    } catch (error) {
-      console.error("Error fetching feedback stats:", error);
-    }
-  };
+  // Calculate average rating from the first item (assuming API sends sorted data)
+  const avgRating = stats && stats.length > 0 ? stats[0].avg_rating : null;
 
-  // Auto-update stats every 5 seconds
-  useEffect(() => {
-    fetchStats(); // Initial fetch
-    const interval = setInterval(fetchStats, 5000);
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
-
-  if (!stats.length) return <CircularProgress sx={{ display: "block", margin: "auto", mt: 5 }} />;
+  if (loading) return <CircularProgress sx={{ display: "block", margin: "auto", mt: 5 }} />;
+  if (error) return <Typography color="error" align="center">{error}</Typography>;
+  if (!stats || stats.length === 0) return <Typography align="center">No feedback data available.</Typography>;
 
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
       spacing={2}
       sx={{
-        height: { xs: "auto", md: "80vh" }, // Adjusts height for small screens
+        height: { xs: "auto", md: "80vh" },
         width: "100%",
         maxWidth: "1200px",
         margin: "auto",
         padding: 2,
         overflow: "hidden",
-        flexWrap: "wrap", // Prevents breaking on smaller screens
+        flexWrap: "wrap",
       }}
     >
       {/* Left: Graph Section */}
@@ -56,16 +43,15 @@ const FeedbackStatus: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           padding: 2,
-          minWidth: 0, // Prevents layout breaking on small screens
+          minWidth: 0,
           overflow: "hidden",
-          minHeight: "300px", // Ensures visibility in small screens
+          minHeight: "300px",
         }}
       >
         <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
           Average Rating: {avgRating !== null ? avgRating.toFixed(1) : "N/A"} ⭐
         </Typography>
 
-        {/* Wrap ResponsiveContainer inside a div for better responsiveness */}
         <div style={{ width: "100%", height: "100%", minHeight: 250 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={stats}>
@@ -83,8 +69,8 @@ const FeedbackStatus: React.FC = () => {
         sx={{
           flex: 1,
           padding: 2,
-          maxHeight: { xs: "auto", md: "80vh" }, // Adjusts max height for small screens
-          minWidth: 0, // Prevents layout issues
+          maxHeight: { xs: "auto", md: "80vh" },
+          minWidth: 0,
           display: "flex",
           flexDirection: "column",
         }}
@@ -92,15 +78,15 @@ const FeedbackStatus: React.FC = () => {
         <Typography variant="h6" sx={{ mb: 1 }}>Feedbacks</Typography>  
 
         <Paper
-          elevation={0} // Removes shadow
+          elevation={0}
           sx={{
             flex: 1,
             padding: 2,
             overflowY: "auto",
-            maxHeight: { xs: "50vh", md: "65vh" }, // Adjust for small screens
-            minWidth: 0, // Prevents layout issues
-            border: "none", // Removes border
-            boxShadow: "none", // Ensures no shadow
+            maxHeight: { xs: "50vh", md: "65vh" },
+            minWidth: 0,
+            border: "none",
+            boxShadow: "none",
           }}
         >
           <FeedbackList />

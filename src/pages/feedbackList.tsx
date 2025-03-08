@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card, CardContent, Typography, Stack } from "@mui/material";
-import RatingStar from "../components/ratingStart";
+import RatingStar from "../components/ratingStart";import useFetch from "../hooks/useFecth";
+
 
 interface Feedback {
   id: number;
@@ -11,27 +12,12 @@ interface Feedback {
 }
 
 const FeedbackList: React.FC = () => {
-  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  // Use the custom hook to fetch data
+  const { data: feedbacks, loading, error } = useFetch<Feedback[]>("http://localhost:3000/api/feedback", 5000);
 
-  // Fetch feedbacks from API
-  const fetchFeedbacks = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/feedback");
-      const data = await response.json();
-      setFeedbacks(data);
-    } catch (error) {
-      console.error("Error fetching feedback:", error);
-    }
-  };
-
-  // Auto-update feedbacks every 5 seconds
-  useEffect(() => {
-    fetchFeedbacks(); // Initial fetch
-    const interval = setInterval(fetchFeedbacks, 5000);
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
-
-  if (feedbacks.length === 0) return <Typography align="center">No feedback available.</Typography>;
+  if (loading) return <Typography align="center">Loading...</Typography>;
+  if (error) return <Typography align="center" color="error">Error: {error}</Typography>;
+  if (!feedbacks || feedbacks.length === 0) return <Typography align="center">No feedback available.</Typography>;
 
   return (
     <Stack
@@ -39,7 +25,6 @@ const FeedbackList: React.FC = () => {
       sx={{
         maxWidth: 500,
         margin: "auto",
-        // maxHeight: feedbacks.length > 5 ? 400 : "auto",
         overflowY: feedbacks.length > 5 ? "auto" : "visible",
         padding: 2,
       }}
