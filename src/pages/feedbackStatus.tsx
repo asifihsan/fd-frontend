@@ -3,6 +3,7 @@ import { Typography, CircularProgress, Stack, Paper } from "@mui/material";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import FeedbackList from "./feedbackList";
 import useFetch from "../hooks/useFecth";
+import endpoints from "../enpoints";
 
 interface FeedbackStats {
   rating: number;
@@ -12,7 +13,7 @@ interface FeedbackStats {
 
 const FeedbackStatus: React.FC = () => {
   // Use `useFetch` hook to get feedback stats with auto-refresh every 5 seconds
-  const { data: stats, loading, error } = useFetch<FeedbackStats[]>("http://localhost:3000/api/feedback/stats", 5000);
+  const { data: stats, loading, error } = useFetch<FeedbackStats[]>(endpoints.feedback.status, 5000);
 
   // Calculate average rating from the first item (assuming API sends sorted data)
   const avgRating = stats && stats.length > 0 ? stats[0].avg_rating : null;

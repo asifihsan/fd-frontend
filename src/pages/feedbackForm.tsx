@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Stack, Snackbar, Alert, FormHelperText, Typography, Box } from "@mui/material";
 import RatingStar from "../components/ratingStart"; // Ensure correct file name
+import endpoints from "../enpoints";
 
 const FeedbackForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +65,7 @@ const FeedbackForm: React.FC = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("http://localhost:3000/api/feedback", {
+      const response = await fetch(endpoints.feedback.submit, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

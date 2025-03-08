@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, Typography, Stack } from "@mui/material";
 import RatingStar from "../components/ratingStart";import useFetch from "../hooks/useFecth";
+import endpoints from "../enpoints";
 
 
 interface Feedback {
@@ -13,7 +14,7 @@ interface Feedback {
 
 const FeedbackList: React.FC = () => {
   // Use the custom hook to fetch data
-  const { data: feedbacks, loading, error } = useFetch<Feedback[]>("http://localhost:3000/api/feedback", 5000);
+  const { data: feedbacks, loading, error } = useFetch<Feedback[]>(endpoints.feedback.get, 5000);
 
   if (loading) return <Typography align="center">Loading...</Typography>;
   if (error) return <Typography align="center" color="error">Error: {error}</Typography>;
